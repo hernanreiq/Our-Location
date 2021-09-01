@@ -1,0 +1,49 @@
+body {
+    background-color: rgb(37, 37, 37);
+    color: white;
+}
+header {
+    background: rgb(0, 107, 107);
+}
+main {
+    height: 600px;
+    width: 100%;
+}
+header div p {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+h1 i {
+    font-size: 100px;
+}
+@media only screen and (max-width: 780px){
+    h1 i {
+        font-size: 80px;
+    }
+}
+@media only screen and (max-width: 580px){
+    h1 i {
+        font-size: 60px;
+    }
+}
+@media only screen and (max-width: 390px){
+    h1 i {
+        font-size: 45px;
+    }
+}
+.marca {
+    color: gold;
+}
+.marca:hover {
+    color: rgb(197, 168, 0);
+}
+.hr-white {
+    height: 3px;
+    background: linear-gradient(to right, rgb(0, 107, 107), white, rgb(0, 107, 107));
+    background: -webkit-linear-gradient(to right, rgb(0, 107, 107), white, rgb(0, 107, 107));
+} 
+.container-fluid, #map-template {
+    height: 100%;
+    width: 100%;
+}

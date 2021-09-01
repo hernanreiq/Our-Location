@@ -1,0 +1,39 @@
+{
+  "name": "our-location",
+  "version": "1.0.0",
+  "description": "see the real-time location of those who are active in the web application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon run index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hernanreiq/Our-Location.git"
+  },
+  "keywords": [
+    "real-time",
+    "web",
+    "application",
+    "our",
+    "location",
+    "leaflet",
+    "node.js",
+    "socket.io",
+    "express"
+  ],
+  "author": "hernanreiq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hernanreiq/Our-Location/issues"
+  },
+  "homepage": "https://github.com/hernanreiq/Our-Location#readme",
+  "dependencies": {
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.1",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
