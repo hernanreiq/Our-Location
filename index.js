@@ -33,6 +33,9 @@ const socketIO = require('socket.io');
 const io = socketIO(server);
 
 io.on('connection', (socket) => {
+    var countUsers = io.engine.clientsCount;
+    io.sockets.emit('users_online', countUsers);
+    
     socket.on('user_coordinates', coords => {
         socket.broadcast.emit('user_connected', coords);
     })

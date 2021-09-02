@@ -1,5 +1,7 @@
 const socket = io(); //En caso de tener un dominio, definirlo como parametro, ejemplo: io('https://bit.ly/hernanreiq');
 
+var user_count = document.getElementById('user_count');
+
 var map = L.map('map-template', {
     center: [18.481232, -69.915466],
     zoom: 13
@@ -24,4 +26,8 @@ socket.on('user_connected', (coords) => {
     L.marker([coords.lat, coords.lng])
     .bindPopup('This is an user')
     .addTo(map);
+});
+
+socket.on('users_online', (countUsers) => {
+    user_count.innerText = countUsers;
 });
