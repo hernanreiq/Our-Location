@@ -23,14 +23,17 @@ const server = app.listen(PORT, () => {
 //routes
 app.use('/', routes);
 
+//Bloquea las rutas no definidas
+app.use((req, res)=>{
+    res.status(404).redirect('/');
+});
+
 //websockets
 const socketIO = require('socket.io');
 const io = socketIO(server);
 
 io.on('connection', (socket) => {
-    console.log('A new user is connected:', socket.id);
-
-    socket.on('disconnect', () => {
-        console.log('An Id was disconected:', socket.id);
+    socket.on('user_coordinates', coords => {
+        socket.broadcast.emit('user_connected', coords);
     })
 });
