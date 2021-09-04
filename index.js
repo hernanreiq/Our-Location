@@ -41,15 +41,16 @@ io.on('connection', (socket) => {
     socket.on('user_coordinates', data => {
         socket.broadcast.emit('user_connected', data);
     });
-    
+
     //LOS USUARIOS QUE YA ESTABAN CONECTADOS LE ENVIAN SUS DATOS AL USUARIO NUEVO
     socket.on('old_user_coordinates', data => {
         socket.broadcast.to(data.newUserId).emit('old_user_coords', data.coords);
     });
     
-    //ACTUALIZAR EL CONTADOR DE USUARIOS
+    //ACTUALIZAR EL CONTADOR DE USUARIOS Y AVISAR QUE SE HA DESCONECTADO UN USUARIO PARA ASÍ ACTUALIZAR EL MAPA
     socket.on('disconnect', () => {
         countUsers = io.engine.clientsCount;
         io.sockets.emit('users_online', countUsers);
+        io.sockets.emit('user_disconnect', {userDisconnected: true});
     });
 });

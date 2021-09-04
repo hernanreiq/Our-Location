@@ -1,10 +1,18 @@
 const socket = io(); //En caso de tener un dominio, definirlo como parametro, ejemplo: io('https://bit.ly/hernanreiq');
 
-//COORDENADAS DE DONDE INICIARÁ EL MAPA
-var map = L.map('map-template', {
-    center: [18.481232, -69.915466],
-    zoom: 11
-});
+var map = '';
+//CREACION DEL MAPA
+function createMap(){
+    map = L.map('map-template', {
+        center: [18.481232, -69.915466],
+        zoom: 11
+    });
+    
+    //ESTILO DE MAPAS UTILIZADOS
+    const tileURL = 'http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+    L.tileLayer(tileURL).addTo(map);
+}
+createMap();
 
 //ICONO QUE SE PINTARÁ PARA LOS USUARIOS
 var userIcon = L.icon({
@@ -22,25 +30,24 @@ var myuserIcon = L.icon({
     popupAnchor: [-3, -30],
 });
 
-//ESTILO DE MAPAS UTILIZADOS
-const tileURL = 'http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-L.tileLayer(tileURL).addTo(map);
-
 //PINTAR MI UBICACIÓN EN TIEMPO REAL
 var myCoords = '';
-map.locate({enableHighAccuracy: true});
-map.on('locationfound', e => {
-    myCoords = [e.latlng.lat, e.latlng.lng];
-    L.marker(myCoords, {icon: myuserIcon})
-    .bindPopup('You are here!')
-    .addTo(map);    
-    
-    //ENVIAR MIS COORDENADAS A TODOS LOS USUARIOS ACTIVOS
-    socket.on('connect', ()=>{
-        socket.emit('user_coordinates', {coords: myCoords, userId: socket.id});
+function printMyLocation(){
+    map.locate({enableHighAccuracy: true});
+    map.on('locationfound', e => {
+        myCoords = [e.latlng.lat, e.latlng.lng];
+        L.marker(myCoords, {icon: myuserIcon})
+        .bindPopup('You are here!')
+        .addTo(map);    
+        
+        //ENVIAR MIS COORDENADAS A TODOS LOS USUARIOS ACTIVOS
+        socket.on('connect', ()=>{
+            socket.emit('user_coordinates', {coords: myCoords, userId: socket.id});
+        });
     });
-});
+}
 
+printMyLocation();
 
 //PINTAR LA UBICACIÓN DE UN USUARIO CUANDO SE CONECTE
 socket.on('user_connected', (data) => {
@@ -57,6 +64,16 @@ socket.on('user_connected', (data) => {
 var user_count = document.getElementById('user_count');
 socket.on('users_online', (countUsers) => {
     user_count.innerText = countUsers;
+});
+
+//USUARIO DESCONECTADO
+socket.on('user_disconnect', (data) => {
+    if(data.userDisconnected){
+        bootstrapAlerts('An user has disconnected', 'alert-info');
+        map.remove();
+        createMap();
+        printMyLocation();
+    }
 });
 
 //PINTAR LA UBICACIÓN DE UN USUARIO VIEJO
@@ -84,4 +101,3 @@ function bootstrapAlerts(message, typeAlert) {
         }
     }, 5000);
 }
-
